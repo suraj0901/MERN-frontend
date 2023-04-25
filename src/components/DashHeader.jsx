@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useSendLogoutMutation } from "../features/auth/authApiSlice";
 import useAuth from "../hooks/useAuth";
+import { HashLoader } from "react-spinners";
 
 const DASH_REGEX = /^\/dash(\/)?$/;
 const NOTES_REGEX = /^\/dash\/notes(\/)?$/;
@@ -95,7 +96,7 @@ const DashHeader = () => {
 
   let buttonContent;
   if (isLoading) {
-    buttonContent = <p>Logging Out...</p>;
+    buttonContent = <HashLoader />;
   } else {
     buttonContent = (
       <>

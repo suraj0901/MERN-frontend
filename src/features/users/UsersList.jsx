@@ -1,5 +1,6 @@
 import { useGetUsersQuery } from "./usersApiSlice";
 import User from "./User";
+import { HashLoader } from "react-spinners";
 
 const UsersList = () => {
   const {
@@ -8,7 +9,7 @@ const UsersList = () => {
     isError,
     isSuccess,
     error,
-  } = useGetUsersQuery('usersList', {
+  } = useGetUsersQuery("usersList", {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -16,7 +17,7 @@ const UsersList = () => {
 
   let content;
 
-  if (isLoading) content = <p>Loading...</p>;
+  if (isLoading) content = <HashLoader />;
   if (isError) content = <p className="errmsg">{error?.data?.message}</p>;
   if (isSuccess) {
     const { ids } = users;

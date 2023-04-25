@@ -4,6 +4,7 @@ import { useLoginMutation } from "./authApiSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import usePersist from "../../hooks/usePersist";
+import { HashLoader } from "react-spinners";
 
 const Login = () => {
   const userRef = useRef();
@@ -49,7 +50,7 @@ const Login = () => {
 
   const errClass = errMsg ? "errmsg" : "offScreen";
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <HashLoader />;
 
   const content = (
     <section className="public">

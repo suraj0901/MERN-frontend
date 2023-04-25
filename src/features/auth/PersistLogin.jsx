@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentToken } from "./authSlice";
 import { useEffect, useRef, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { HashLoader } from "react-spinners";
 
 const ENV = "development";
 const PersistLogin = () => {
@@ -40,7 +41,7 @@ const PersistLogin = () => {
     content = <Outlet />;
   } else if (isLoading) {
     console.log("loading");
-    content = <p>Loading...</p>;
+    content = <HashLoader />;
   } else if (isError) {
     console.log("error");
     content = (
