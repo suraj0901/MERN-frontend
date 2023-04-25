@@ -1,12 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-
-import { useSelector } from "react-redux";
-import { selectNoteById } from "./notesApiSlice";
+import { useGetNotesQuery } from "./notesApiSlice";
+import { memo } from "react";
 
 const Note = ({ noteId }) => {
-  const note = useSelector((state) => selectNoteById(state, noteId));
+  const { note } = useGetNotesQuery("noteList", {
+    selectFromResult: ({ data }) => ({
+      note: data?.entities?.[noteId],
+    }),
+  });
+
   const navigate = useNavigate();
   if (note) {
     const created = new Date(note.createdAt).toLocaleString("en-US", {
@@ -35,9 +39,9 @@ const Note = ({ noteId }) => {
         <td className="table__cell note__username">{note.username}</td>
 
         <td className="table__cell">
-            <button className="icon-button table__button" onClick={handleEdit}>
-                <FontAwesomeIcon icon={faPenToSquare} />
-            </button>
+          <button className="icon-button table__button" onClick={handleEdit}>
+            <FontAwesomeIcon icon={faPenToSquare} />
+          </button>
         </td>
       </tr>
     );
@@ -45,4 +49,5 @@ const Note = ({ noteId }) => {
   return null;
 };
 
-export default Note;
+const memoMizedNote = memo(Note);
+export default memoMizedNote;

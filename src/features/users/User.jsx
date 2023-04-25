@@ -1,12 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-
-import { useSelector } from "react-redux";
-import { selectUserById } from "./usersApiSlice";
+import { useGetUsersQuery } from "./usersApiSlice";
+import { memo } from "react";
 
 const User = ({ userId }) => {
-  const user = useSelector((state) => selectUserById(state, userId));
+  const { user } = useGetUsersQuery("usersList", {
+    selectFromResult: ({ data }) => ({
+      user: data?.entities[userId],
+    }),
+  });
   const navigate = useNavigate();
 
   if (user) {
@@ -19,10 +22,7 @@ const User = ({ userId }) => {
         <td className={`table__cell ${cellStatus}`}>{user.username}</td>
         <td className={`table__cell ${cellStatus}`}>{userRolesString()}</td>
         <td className={`table__cell ${cellStatus}`}>
-          <button
-            className="icon-button table__button"
-            onClick={handleEdit}
-          >
+          <button className="icon-button table__button" onClick={handleEdit}>
             <FontAwesomeIcon icon={faPenToSquare} />
           </button>
         </td>
@@ -32,4 +32,6 @@ const User = ({ userId }) => {
   return null;
 };
 
-export default User;
+const memoMizedUser = memo(User);
+
+export default memoMizedUser;

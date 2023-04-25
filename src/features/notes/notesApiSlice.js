@@ -11,13 +11,15 @@ const initialState = notesAdapter.getInitialState();
 export const notesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getNotes: builder.query({
-      query: () => "/notes",
-      validateStatus: (response, result) => {
-        return response.status === 200 && !result.isError;
-      },
-      keepUnusedDataFor: 5,
+      query: () => ({
+        url: "/notes",
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        },
+      }),
+      // keepUnusedDataFor: 5,
       transformResponse: (responseData) => {
-        const loadedNotes = responseData.map((note) => {
+        const loadedNotes = responseData?.map((note) => {
           note.id = note._id;
           return note;
         });
@@ -33,10 +35,47 @@ export const notesApiSlice = apiSlice.injectEndpoints({
         return [{ type: "Note", id: "LIST" }];
       },
     }),
+    addNewNotes: builder.mutation({
+      query: (initialNotesData) => ({
+        url: "/notes",
+        method: "POST",
+        body: {
+          ...initialNotesData,
+        },
+      }),
+      invalidatesTags: [{ type: "Notes", id: "LIST" }],
+    }),
+    updateNotes: builder.mutation({
+      query: (initialNotesData) => ({
+        url: "/notes",
+        method: "PATCH",
+        body: {
+          ...initialNotesData,
+        },
+      }),
+      invalidatesTags: (_result, _error, arg) => [
+        { type: "Notes", id: arg.id },
+      ],
+    }),
+    deleteNotes: builder.mutation({
+      query: ({ id }) => ({
+        url: "/notes",
+        method: "DELETE",
+        body: { id },
+      }),
+      invalidatesTags: (_result, _error, arg) => [
+        { type: "Notes", id: arg.id },
+      ],
+    }),
   }),
 });
 
-export const { useGetNotesQuery } = notesApiSlice;
+export const {
+  useGetNotesQuery,
+  useAddNewNotesMutation,
+  useUpdateNotesMutation,
+  useDeleteNotesMutation,
+} = notesApiSlice;
 
 // returns the query result object
 export const selectNoteResult = notesApiSlice.endpoints.getNotes.select();
