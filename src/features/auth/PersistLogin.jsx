@@ -5,6 +5,7 @@ import { selectCurrentToken } from "./authSlice";
 import { useEffect, useRef, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { HashLoader } from "react-spinners";
+import Loader from "../../components/Loader";
 
 const ENV = "development";
 const PersistLogin = () => {
@@ -41,12 +42,13 @@ const PersistLogin = () => {
     content = <Outlet />;
   } else if (isLoading) {
     console.log("loading");
-    content = <HashLoader />;
+    content = <Loader />;
   } else if (isError) {
     console.log("error");
     content = (
       <p className="errmsg">
-        {error?.data?.message}{" - "}
+        {error?.data?.message}
+        {" - "}
         <Link to={"/login"}>Please login again</Link>
       </p>
     );
@@ -58,7 +60,7 @@ const PersistLogin = () => {
     console.log(isUninitialized);
     content = <Outlet />;
   }
-  
+
   return content;
 };
 

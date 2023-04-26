@@ -2,6 +2,7 @@ import { useGetNotesQuery } from "./notesApiSlice";
 import Note from "./Note";
 import useAuth from "../../hooks/useAuth";
 import { HashLoader } from "react-spinners";
+import Loader from "../../components/Loader";
 
 const NotesList = () => {
   const { username, isManager, isAdmin } = useAuth();
@@ -13,14 +14,14 @@ const NotesList = () => {
     isSuccess,
     error,
   } = useGetNotesQuery("notesList", {
-    pollingInterval: 15000,
+    pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
 
   let content;
 
-  if (isLoading) content = <HashLoader />;
+  if (isLoading) content = <Loader />;
   if (isError) content = <p className="errmsg">{error?.data?.message}</p>;
   if (isSuccess) {
     const { ids, entities } = notes;

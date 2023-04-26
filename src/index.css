@@ -38,6 +38,7 @@
   color: var(--ERROR);
   text-decoration: underline;
 }
+
 .nowrap {
   white-space: nowrap;
 }
@@ -63,6 +64,12 @@
 }
 
 /* || GENERAL STYLES */
+.center {
+  height: 85vh;
+  width: 100%;
+  display: grid;
+  place-content: center;
+}
 
 body {
   font-family: "Nunito", sans-serif;

@@ -43,7 +43,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
           ...initialNotesData,
         },
       }),
-      invalidatesTags: [{ type: "Notes", id: "LIST" }],
+      invalidatesTags: [{ type: "Note", id: "LIST" }],
     }),
     updateNotes: builder.mutation({
       query: (initialNotesData) => ({
@@ -54,7 +54,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
         },
       }),
       invalidatesTags: (_result, _error, arg) => [
-        { type: "Notes", id: arg.id },
+        { type: "Note", id: arg.id },
       ],
     }),
     deleteNotes: builder.mutation({
@@ -64,7 +64,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
         body: { id },
       }),
       invalidatesTags: (_result, _error, arg) => [
-        { type: "Notes", id: arg.id },
+        { type: "Note", id: arg.id },
       ],
     }),
   }),

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
+import { PulseLoader } from "react-spinners";
 
 const EditNoteForm = ({ note, users }) => {
   const { isManager, isAdmin } = useAuth();
@@ -16,7 +17,12 @@ const EditNoteForm = ({ note, users }) => {
 
   const [
     deleteNote,
-    { isSuccess: isDelSuccess, isError: isDelError, error: delerror },
+    {
+      isSuccess: isDelSuccess,
+      isLoading: isDelLoading,
+      isError: isDelError,
+      error: delerror,
+    },
   ] = useDeleteNotesMutation();
 
   const navigate = useNavigate();
@@ -86,7 +92,9 @@ const EditNoteForm = ({ note, users }) => {
 
   let deleteButton = null;
   if (isManager || isAdmin) {
-    deleteButton = (
+    deleteButton = isDelLoading ? (
+      <PulseLoader color="#FFF" />
+    ) : (
       <button
         className="icon-button"
         title="Delete"
@@ -97,6 +105,19 @@ const EditNoteForm = ({ note, users }) => {
     );
   }
 
+  const saveButton = isLoading ? (
+    <PulseLoader color="#FFF" />
+  ) : (
+    <button
+      className="icon-button"
+      title="Save"
+      onClick={onSaveNoteClicked}
+      disabled={!canSave}
+    >
+      <FontAwesomeIcon icon={faSave} />
+    </button>
+  );
+
   const content = (
     <>
       <p className={errClass}>{errContent}</p>
@@ -105,14 +126,7 @@ const EditNoteForm = ({ note, users }) => {
         <div className="form__title-row">
           <h2>Edit Note #{note.ticket}</h2>
           <div className="form__action-buttons">
-            <button
-              className="icon-button"
-              title="Save"
-              onClick={onSaveNoteClicked}
-              disabled={!canSave}
-            >  
-              <FontAwesomeIcon icon={faSave} />
-            </button>
+            {saveButton}
             {deleteButton}
           </div>
         </div>

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import usePersist from "../../hooks/usePersist";
 import { HashLoader } from "react-spinners";
+import Loader from "../../components/Loader";
 
 const Login = () => {
   const userRef = useRef();
@@ -50,7 +51,7 @@ const Login = () => {
 
   const errClass = errMsg ? "errmsg" : "offScreen";
 
-  if (isLoading) return <HashLoader />;
+  if (isLoading) return <Loader />;
 
   const content = (
     <section className="public">

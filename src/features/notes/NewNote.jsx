@@ -1,6 +1,6 @@
 import NewNoteForm from "./NewNoteForm";
 import { useGetUsersQuery } from "../users/usersApiSlice";
-import PulseLoader from "react-spinners/PulseLoader";
+import Loader from "../../components/Loader";
 
 const NewNote = () => {
   const { users } = useGetUsersQuery("usersList", {
@@ -8,7 +8,7 @@ const NewNote = () => {
       users: data?.ids.map((id) => data?.entities?.[id]),
     }),
   });
-  if (!users?.length) return <PulseLoader color="#FFF" />;
+  if (!users?.length) return <Loader />;
   const content = <NewNoteForm users={users} />;
   return content;
 };
